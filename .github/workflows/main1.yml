@@ -1,0 +1,38 @@
+name: Sample
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_REGISTRY: docker.io/akashkam/podman
+  DOCKER_USERNAME: akashkam
+
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker registry by Podman
+      run: |
+        podman login  "${{ env.DOCKER_REGISTRY }}" -u "${{ env.DOCKER_USERNAME }}" -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Voting Application Build Image using podman
+      run: |
+        podman build -t ${{ env.DOCKER_USERNAME }}/vote:v1 vote/.
+        podman push ${{ env.DOCKER_USERNAME }}/vote:v1
+        
+    - name: Result Application Build Image using podman
+      run: |
+        podman build -t result:r4 result/.
+        podman push result:r4
+  
+    - name: Worker Application Build Image using podman
+      run: |
+        podman build -t worker:w4 worker/.
+        podman push worker:w4
