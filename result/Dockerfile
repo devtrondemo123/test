@@ -4,7 +4,7 @@ WORKDIR /app
 
 RUN npm install -g nodemon
 
-COPY package*.json ./
+COPY result/package*.json ./
 
 RUN npm ci \
  && npm cache clean --force \
