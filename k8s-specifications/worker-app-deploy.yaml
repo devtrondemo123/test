@@ -21,4 +21,4 @@ spec:
     spec:
       containers:
         - name: worker-app
-          image: ganeshbachate/devtronvote:8af4812b-3-4
+          image: rohitshavili/worker
